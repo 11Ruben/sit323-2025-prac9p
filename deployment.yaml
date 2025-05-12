@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sit323-2025-prac9p # Name of the Deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sit323-2025-prac9p # Match the pods with this label
+  template:
+    metadata:
+      labels:
+        app: sit323-2025-prac9p # Label for the pods created
+    spec:
+      containers:
+        - name: sit323-2025-prac9p # Name of the container
+          image: 11ruben/prac9p-mongodb:latest # Docker image to run
+          ports:
+            - containerPort: 3040 # The application runs on port 3040
+          env:
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret # Refer to "mongodb-secret.yaml"
+                  key: mongo-user # Refer to username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret # Refer to "mongodb-secret.yaml"
+                  key: mongo-password # Refer to password
+            - name: MONGO_DB
+              value: myDB # Name of the MongoDB database 
+            - name: MONGO_HOST
+              value: mongo
